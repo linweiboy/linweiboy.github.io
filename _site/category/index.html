@@ -14,7 +14,7 @@
 
 
 
-<html class="theme-next pisces use-motion" lang="en">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -116,7 +116,7 @@
 <meta property="og:title" content="JoelLin">
 <meta property="og:url" content="http://localhost:4000/category/">
 <meta property="og:site_name" content="JoelLin">
-<meta property="og:locale" content="en">
+<meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JoelLin">
 
@@ -131,7 +131,7 @@
     motion: true,
     duoshuo: {
       userId: '0',
-      author: 'Author'
+      author: '博主'
     },
     algolia: {
       applicationID: '',
@@ -151,7 +151,7 @@
 
 
 
-  <title>Category | JoelLin</title>
+  <title>分类 | JoelLin</title>
   
 
 
@@ -171,7 +171,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -219,7 +219,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            首页
           </a>
         </li>
       
@@ -231,7 +231,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            归档
           </a>
         </li>
       
@@ -243,7 +243,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
-            Tags
+            标签
           </a>
         </li>
       
@@ -269,7 +269,7 @@
   <div class="collection-title">
     <h1>
     
-    <small>Category</small>
+    <small>分类</small>
     </h1>
   </div>
 
@@ -726,7 +726,7 @@
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
                 <span class="site-state-item-count">15</span>
-                <span class="site-state-item-name">posts</span>
+                <span class="site-state-item-name">日志</span>
               </a>
             </div>
           
@@ -737,7 +737,7 @@
             <div class="site-state-item site-state-categories">
               <a href="/categories/">
                 <span class="site-state-item-count">8</span>
-                <span class="site-state-item-name">categories</span>
+                <span class="site-state-item-name">分类</span>
               </a>
             </div>
           
@@ -748,7 +748,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags/">
                 <span class="site-state-item-count">6</span>
-                <span class="site-state-item-name">tags</span>
+                <span class="site-state-item-name">标签</span>
               </a>
             </div>
           
@@ -807,11 +807,11 @@
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://jekyllrb.com">Jekyll</a>
+  由 <a class="theme-link" href="https://jekyllrb.com">Jekyll</a> 强力驱动
 </div>
 
 <div class="theme-info">
-  Theme -
+  主题 -
   <a class="theme-link" href="https://github.com/simpleyyt/jekyll-theme-next">
     NexT.Pisces
   </a>
@@ -905,6 +905,13 @@
   
   <script type="text/javascript" src="/assets/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/canvas-nest/canvas-nest.min.js"></script>
+
 
   
 
@@ -971,7 +978,7 @@
         }
 
         $('.collection-title')[0].childNodes[1].childNodes[0].nodeValue = collection;
-        document.title = "Category: " + collection + " | JoelLin";
+        document.title = "分类: " + collection + " | JoelLin";
 
         var sizes = maps[encodeURIComponent(collection)];
         var base = "#" + "/" + collection;
