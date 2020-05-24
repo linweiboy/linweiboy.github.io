@@ -1,0 +1,916 @@
+
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/assets/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/assets/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/assets/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="JoelLin" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="作为一个iOS开发者来说，AFNetworking是我很熟悉的一个开源库了，所以对它的了解有必要知道更多些.">
+<meta name="keywords" content="Jekyll, NexT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AFNetworking3.0/NSURLSession的理解">
+<meta property="og:url" content="http://localhost:4000/ios/2017/07/19/two-AFNetworking/">
+<meta property="og:site_name" content="JoelLin">
+<meta property="og:description" content="作为一个iOS开发者来说，AFNetworking是我很熟悉的一个开源库了，所以对它的了解有必要知道更多些.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://image.baidu.com/search/detail?ct=503316480&amp;z=0&amp;ipn=d&amp;word=TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B&amp;step_word=&amp;hs=0&amp;pn=9&amp;spn=0&amp;di=53130&amp;pi=0&amp;rn=1&amp;tn=baiduimagedetail&amp;is=0%2C0&amp;istype=0&amp;ie=utf-8&amp;oe=utf-8&amp;in=&amp;cl=2&amp;lm=-1&amp;st=undefined&amp;cs=480079048%2C3952040209&amp;os=3061573288%2C1237351487&amp;simid=4024651412%2C769276171&amp;adpicid=0&amp;lpn=0&amp;ln=904&amp;fr=&amp;fmq=1590304993091_R&amp;fm=&amp;ic=undefined&amp;s=undefined&amp;hd=undefined&amp;latest=undefined&amp;copyright=undefined&amp;se=&amp;sme=&amp;tab=0&amp;width=undefined&amp;height=undefined&amp;face=undefined&amp;ist=&amp;jit=&amp;cg=&amp;bdtype=0&amp;oriquery=&amp;objurl=http%3A%2F%2Fimg.it610.com%2Fimage%2Finfo5%2F3a481616717741198d6e8afc36f81452.png&amp;fromurl=ippr_z2C%24qAzdH3FAzdH3Fooo_z%26e3Btpm8a_z%26e3Bv54AzdH3Fw6ptvsjAzdH3F9mlbbnn_z%26e3Bip4&amp;gsm=a&amp;rpstart=0&amp;rpnum=0&amp;islist=&amp;querylist=&amp;force=undefined">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AFNetworking3.0/NSURLSession的理解">
+<meta name="twitter:description" content="作为一个iOS开发者来说，AFNetworking是我很熟悉的一个开源库了，所以对它的了解有必要知道更多些.">
+<meta name="twitter:image" content="https://image.baidu.com/search/detail?ct=503316480&amp;z=0&amp;ipn=d&amp;word=TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B&amp;step_word=&amp;hs=0&amp;pn=9&amp;spn=0&amp;di=53130&amp;pi=0&amp;rn=1&amp;tn=baiduimagedetail&amp;is=0%2C0&amp;istype=0&amp;ie=utf-8&amp;oe=utf-8&amp;in=&amp;cl=2&amp;lm=-1&amp;st=undefined&amp;cs=480079048%2C3952040209&amp;os=3061573288%2C1237351487&amp;simid=4024651412%2C769276171&amp;adpicid=0&amp;lpn=0&amp;ln=904&amp;fr=&amp;fmq=1590304993091_R&amp;fm=&amp;ic=undefined&amp;s=undefined&amp;hd=undefined&amp;latest=undefined&amp;copyright=undefined&amp;se=&amp;sme=&amp;tab=0&amp;width=undefined&amp;height=undefined&amp;face=undefined&amp;ist=&amp;jit=&amp;cg=&amp;bdtype=0&amp;oriquery=&amp;objurl=http%3A%2F%2Fimg.it610.com%2Fimage%2Finfo5%2F3a481616717741198d6e8afc36f81452.png&amp;fromurl=ippr_z2C%24qAzdH3FAzdH3Fooo_z%26e3Btpm8a_z%26e3Bv54AzdH3Fw6ptvsjAzdH3F9mlbbnn_z%26e3Bip4&amp;gsm=a&amp;rpstart=0&amp;rpnum=0&amp;islist=&amp;querylist=&amp;force=undefined">
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://localhost:4000/"/>
+
+
+
+
+
+  <title>AFNetworking3.0/NSURLSession的理解 | JoelLin</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JoelLin</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+<div id="posts" class="posts-expand">
+  
+  
+
+  
+
+  
+  
+  
+
+  <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://localhost:4000/ios/2017/07/19/two-AFNetworking/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="谭林伟">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="assets/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JoelLin">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+          
+          
+            AFNetworking3.0/NSURLSession的理解
+          
+        </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-19T00:00:00+08:00">
+                2017-07-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/iOS" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+            
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <blockquote>
+  <p>很多时候，AFNetworking都是目前iOS开发者网络库中的不二选择。Github上2W+的star数足见其流行程度。而从iOS7.0开始，苹果推出了新的网络库继承者NSURLSession后，AFNetworking也毫不犹豫地加入了对其的支持。3.0+更加只是提供了NSURLSession的支持。</p>
+</blockquote>
+
+<!-- more -->
+
+<h2 id="afnetworking常用的写法">AFNetworking常用的写法</h2>
+
+<p>我们使用AFNetworking的时候，可能会有很多的朋友都会采用以下的写法：</p>
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8</pre></td><td class="code"><pre class="highlight"><code>AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
+    sessionManager.requestSerializer     = [AFHTTPRequestSerializer serializer];
+    sessionManager.responseSerializer    = [AFHTTPResponseSerializer serializer];
+    [sessionManager GET:urlString
+             parameters:parameters
+               progress:progressBlock
+                success:successHandler
+                failure:failureHandler];
+</code></pre></td></tr></tbody></table></div></div>
+<p>大概可以描述一下这个过程，每次开启一个网络请求时，首先新建一个AFHTTPSessionManager，然后将相关的requestSerializer和reponseSerializer赋值；最后发起相应的GET/POST等请求。</p>
+
+<p>而如果是直接采用NSURLSession来请求网络呢，我们则经常会采用以下的写法：</p>
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10</pre></td><td class="code"><pre class="highlight"><code>NSURLSession *session =  [NSURLSession 
+    sessionWithConfiguration:
+    [NSURLSessionConfiguration defaultSessionConfiguration]
+     delegate:nil
+      delegateQueue:[NSOperationQueue mainQueue]];
+      
+      NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+      completionHandler:completionHandler];
+      
+    [dataTask resume];
+</code></pre></td></tr></tbody></table></div></div>
+<p>这个过程其实和上面的基本一致。新建一个Session，然后新建task，激活task，完成网络请求。</p>
+
+<p>那么现在问题来了。为什么每次都需要新建一个SessionManager/Session？如果在多个Task请求的情况下，如果采取一个共享的SessionManager/Session是否可行？如果可行，与之前每次新建SessionManager/Session相比，孰优孰劣？</p>
+
+<h2 id="这篇文章的主要目的">这篇文章的主要目的</h2>
+
+<p>本篇文章会告诉您：</p>
+<ol>
+  <li>为什么要使用NSURLSession而不是NSURLConnection</li>
+  <li>为什么要用共享的SessionManager/Session，而不是每次都启动一个新的
+为什么要选择NSURLSession</li>
+</ol>
+
+<p>NSURLSession在iOS7.0时被Apple提出后，虽然Apple一直对其良好的API设计大力推广，然而其能够达到的效果，似乎一直都和NSURLConnection不相伯仲。</p>
+
+<p>特别是在网络的Dependecy依赖处理上，由于AFNetworking优秀的架构设计，NSURLSession甚至还不如NSURLConnection好用。那么，有什么理由切换到NSURLSession？ 2015年的WWDC似乎告诉了我们答案。</p>
+
+<p>HTTP /2, 2015年5月RFC 7540正式发表的下一代HTTP协议，是1999年来HTTP 1.1发布后的首个更新。相对于前一个版本，HTTP /2以快著称。对相同图片、相同服务器的下载，在不同协议下所需的时间：</p>
+<blockquote>
+  <p>对于HTTP 1.1与HTTP 2加载时间对照（<a href="https://http2.akamai.com/demo">这是我查了HTTP官方解释得到的</a>）   HTTP 1.1 load time：9.63s    HTTP 2  load time：2.32s</p>
+</blockquote>
+
+<p>这里我们并不打算展开HTTP /2的原理，有兴趣的同学可以Google之。根据<a href="https://developer.apple.com/videos/play/wwdc2015/711/">2015的WWDC Session711</a>，我们知道iOS9+，NSURLSession开始正式支持HTTP /2，也就意味着你的网络连接速度也可以有如上图那样的提升。</p>
+
+<p>更人性化更优秀的API设计，HTTP /2的支持，这是否能成为你使用NSURLSession的理由？至少它们成为了说服我的理由。</p>
+
+<h2 id="为什么要尽量共享session而不是每次新建session">为什么要尽量共享Session，而不是每次新建Session</h2>
+
+<p>在回答这个问题以前，我们先来聊聊网络的通讯协议。我们也都知道，HTTP协议是基于TCP协议的。所以在每次的HTTP请求之前，客户端和服务器端，都先需要经过TCP连接的三次握手，即每次请求之前，网络的数据都已经在客户端和服务器端之间来回了三次。如下图：</p>
+
+<p><img src="https://image.baidu.com/search/detail?ct=503316480&amp;z=0&amp;ipn=d&amp;word=TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B&amp;step_word=&amp;hs=0&amp;pn=9&amp;spn=0&amp;di=53130&amp;pi=0&amp;rn=1&amp;tn=baiduimagedetail&amp;is=0%2C0&amp;istype=0&amp;ie=utf-8&amp;oe=utf-8&amp;in=&amp;cl=2&amp;lm=-1&amp;st=undefined&amp;cs=480079048%2C3952040209&amp;os=3061573288%2C1237351487&amp;simid=4024651412%2C769276171&amp;adpicid=0&amp;lpn=0&amp;ln=904&amp;fr=&amp;fmq=1590304993091_R&amp;fm=&amp;ic=undefined&amp;s=undefined&amp;hd=undefined&amp;latest=undefined&amp;copyright=undefined&amp;se=&amp;sme=&amp;tab=0&amp;width=undefined&amp;height=undefined&amp;face=undefined&amp;ist=&amp;jit=&amp;cg=&amp;bdtype=0&amp;oriquery=&amp;objurl=http%3A%2F%2Fimg.it610.com%2Fimage%2Finfo5%2F3a481616717741198d6e8afc36f81452.png&amp;fromurl=ippr_z2C%24qAzdH3FAzdH3Fooo_z%26e3Btpm8a_z%26e3Bv54AzdH3Fw6ptvsjAzdH3F9mlbbnn_z%26e3Bip4&amp;gsm=a&amp;rpstart=0&amp;rpnum=0&amp;islist=&amp;querylist=&amp;force=undefined" alt="TCP三次握手（图片来源网络）" /></p>
+
+<p>关于HTTP的三次握手，我在另一篇博文有介绍，可自行查阅相关了解。</p>
+
+<p><strong>事实上，苹果的文档中，还对一个服务器最高的TCP并发有相应的描述</strong>：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17</pre></td><td class="code"><pre class="highlight"><code><span class="n">HTTPMaximumConnectionsPerHost</span>  <span class="n">Property</span>
+<span class="n">The</span> <span class="n">maximum</span> <span class="n">number</span> <span class="n">of</span> <span class="n">simultaneous</span> <span class="n">connections</span> <span class="n">to</span> <span class="n">make</span> <span class="n">to</span> <span class="n">a</span> <span class="n">given</span> <span class="n">host</span><span class="p">.</span>
+
+<span class="n">Declaration</span>
+<span class="n">SWIFT</span>
+    <span class="n">var</span> <span class="n">HTTPMaximumConnectionsPerHost</span><span class="o">:</span> <span class="n">Int</span>
+<span class="n">OBJECTIVE</span><span class="o">-</span><span class="n">C</span>
+    <span class="k">@property</span> <span class="n">NSInteger</span> <span class="n">HTTPMaximumConnectionsPerHost</span>
+<span class="n">Discussion</span>
+<span class="n">This</span> <span class="n">property</span> <span class="n">determines</span> <span class="n">the</span> <span class="n">maximum</span> <span class="n">number</span> <span class="n">of</span> <span class="n">simultaneous</span> <span class="n">connections</span> <span class="n">made</span> <span class="n">to</span> <span class="n">each</span> <span class="n">host</span> <span class="n">by</span> <span class="n">tasks</span> <span class="n">within</span> <span class="n">sessions</span> <span class="n">based</span> <span class="n">on</span> <span class="n">this</span> <span class="n">configuration</span><span class="p">.</span>
+
+<span class="n">This</span> <span class="n">limit</span> <span class="n">is</span> <span class="n">per</span> <span class="n">session</span><span class="p">,</span> <span class="n">so</span> <span class="k">if</span> <span class="n">you</span> <span class="n">use</span> <span class="n">multiple</span> <span class="n">sessions</span><span class="p">,</span> <span class="n">your</span> <span class="n">app</span> <span class="n">as</span> <span class="n">a</span> <span class="n">whole</span> <span class="n">may</span> <span class="n">exceed</span> <span class="n">this</span> <span class="n">limit</span><span class="p">.</span> <span class="n">Additionally</span><span class="p">,</span> <span class="n">depending</span> <span class="n">on</span> <span class="n">your</span> <span class="n">connection</span> <span class="n">to</span> <span class="n">the</span> <span class="n">Internet</span><span class="p">,</span> <span class="n">a</span> <span class="n">session</span> <span class="n">may</span> <span class="n">use</span> <span class="n">a</span> <span class="n">lower</span> <span class="n">limit</span> <span class="n">than</span> <span class="n">the</span> <span class="n">one</span> <span class="n">you</span> <span class="n">specify</span><span class="p">.</span>
+
+<span class="n">The</span> <span class="k">default</span> <span class="n">value</span> <span class="n">is</span> <span class="mi">6</span> <span class="k">in</span> <span class="n">OS</span> <span class="n">X</span><span class="p">,</span> <span class="n">or</span> <span class="mi">4</span> <span class="k">in</span> <span class="n">iOS</span><span class="p">.</span>
+
+<span class="n">Availability</span>
+<span class="n">Available</span> <span class="k">in</span> <span class="n">iOS</span> <span class="mi">7</span><span class="p">.</span><span class="mi">0</span> <span class="n">and</span> <span class="n">later</span><span class="p">.</span>
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>我们可以看到，默认配置下，iOS对于同一个IP服务器的并发最大为4，OS X为6。而如果你没有使用共享的Session，则可能会超过这个数。</p>
+
+<p>因此，如果能用共享的Session，还是用共享的吧。有些许的网络加速，也是一件不错的事情.</p>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+      
+      
+
+      
+      
+        <div class="post-nav" id="post-nav-id">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/ios/2016/02/16/first-test/" rel="prev" title="HTTP通信及HTTP通信过程简介">
+                HTTP通信及HTTP通信过程简介 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+      
+
+      
+    </footer>
+  </article>
+
+  <div class="post-spread">
+    
+  </div>
+</div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        
+        
+        
+
+
+
+
+
+
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/assets/images/avatar.gif"
+               alt="谭林伟" />
+          <p class="site-author-name" itemprop="name">谭林伟</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+        
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+
+
+
+
+
+
+
+            
+              <div class="post-toc-content">
+    <ol class=nav>
+      <li class="nav-item nav-level-2"> <a class="nav-link" href="#afnetworking常用的写法"> <span class="nav-number">1</span> <span class="nav-text">AFNetworking常用的写法</span> </a> </li> <li class="nav-item nav-level-2"> <a class="nav-link" href="#这篇文章的主要目的"> <span class="nav-number">2</span> <span class="nav-text">这篇文章的主要目的</span> </a> </li> <li class="nav-item nav-level-2"> <a class="nav-link" href="#为什么要尽量共享session而不是每次新建session"> <span class="nav-number">3</span> <span class="nav-text">为什么要尽量共享Session，而不是每次新建Session</span> </a> </li>
+    </ol>
+  </div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">谭林伟</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://jekyllrb.com">Jekyll</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/simpleyyt/jekyll-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+   
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  <script type="text/javascript" src="/assets/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/assets/js/src/post-details.js?v=5.1.1"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+    
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
+
